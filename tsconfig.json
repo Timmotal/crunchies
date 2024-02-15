@@ -2,10 +2,14 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
+    "baseUrl": ".", // the root directory
+    "paths": { // list of paths that will map from a string to an actual path
+    // eg: anything imported as "@components/*, anything that comes after,  will be mapped as: ["src"/components/*]
+      // "@/*": ["./*"],
+      "@/*": ["src/*"],
+      "@/components/*": ["src/components/*"],
+      "@assets/*": ["assets/*"],
+      // it is just, key: value shirts, the key: @something. the value, is the right handside
     }
   },
   "include": [

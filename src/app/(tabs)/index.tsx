@@ -6,8 +6,10 @@
 // import { Text, View } from '@/src/components/Themed';
 import { View } from 'react-native';
 // import Colors from '../../constants/Colors';
-import products from '@/assets/data/products';
-import ProductListItem from '@/src/components/ProductListItem';
+// import products from '@/data/products';
+import products from '@assets/data/products';
+import ProductListItem from '@/components/ProductListItem';
+import { Product } from '@/types';
 
 // const product = products[0];
 
