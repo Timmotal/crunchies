@@ -1,28 +1,39 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import products from '@assets/data/products';
 import { defaultPizzaImage } from '@/components/ProductListItem';
 import { useState } from 'react';
 import Button from '@/components/Button';
+import { useCart } from '@/providers/cartProvider';
+import { PizzaSize } from '@/types';
+
 
 // type Props = {}
 //  t
 
-const sizes = ['S', 'M', 'L', 'XL'];
+const sizes: PizzaSize[] = ['S', 'M', 'L', 'XL'];
 
 const ProductDetailScreen = () => {
   //  to receive the dynamic route from the path, we destructure
   const { id } = useLocalSearchParams();
+  const { addItem } = useCart();
 
+  const router = useRouter();
   // hooks should be used in the body of the component, not outside or inside functions, not after if statements
   // try to always add the hooks and state at the top of your component
-  const [ selectedSize, setSelectedSize ] = useState('L');
+  const [ selectedSize, setSelectedSize ] = useState<PizzaSize>('L');
 
   // go find the ID equal to the ID of the params
   const product = products.find((p) => p.id.toString() === id);
 
   const addToCart = () => {
-    console.warn(selectedSize, 'Adding to cart...Feb 16th, 2024, 1157 hours')
+    // handling when product is undefined
+    if (!product) {
+      return // basically do not do anything
+    }
+    addItem(product, selectedSize);
+    // console.warn(selectedSize, 'Adding to cart...Feb 16th, 2024, 1157 hours');
+    router.push('/cart');
   }
 
   if (!product){
