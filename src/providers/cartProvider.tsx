@@ -83,7 +83,8 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     // const total = 493;
     const total = items.reduce(
         (sum, item) => (sum += item.product.price * item.quantity),
-        0
+                        // sum += 12 * 2 + 34 + 
+        0 // initial value of sum
     )
 
     return (

@@ -8,7 +8,7 @@ import { Text, View } from 'react-native';
 import Colors from '@/constants/Colors';
 // import Colors from '@/src/constants/Colors';
 import { Product } from '../types';
-import { Link } from 'expo-router';
+import { Link, useSegments } from 'expo-router';
 
 export const defaultPizzaImage =
 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/veggie.png';
@@ -21,10 +21,13 @@ type ProductListItemProps = {
 // const ProductListItem = (props) => { // to define a component, create a simple function
 // specify 'type' after 'destructure'
 const ProductListItem = ({ product }: ProductListItemProps) => { // destructure
+  const segments = useSegments(); // we can also use pathways
+  console.log(segments);
   // console.log(props);
   return (
     // asChild tells it, that the children elements should keep its styles only for elements other than texts
-    <Link href={`/menu/${product.id}`} asChild>
+    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
+    {/* // <Link href={`/menu/${product.id}`} asChild> */}
     {/* <Link href={'/product'} asChild> */}
     {/* <View style={styles.container}> */}
     {/* pressable is similar to view but can be pressed */}
