@@ -14,7 +14,7 @@ export default function MenuStack() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Menu",
+          title: 'Menu',
           headerRight: () => (
             <Link href="/(admin)/menu/create" asChild>
               <Pressable>
@@ -32,10 +32,10 @@ export default function MenuStack() {
         }}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="[id]"
         options={{
-          title: "Menu",
+          title: 'Menu',
           headerRight: () => (
             <Link href="/cart" asChild>
               <Pressable>
@@ -51,7 +51,7 @@ export default function MenuStack() {
             </Link>
           ),
         }}
-      />
+      /> */}
     </Stack>
   );
 }
