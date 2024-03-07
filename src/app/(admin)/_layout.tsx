@@ -63,9 +63,10 @@ export default function TabLayout() {
       />
       {/* this is where i come into the picture */}
       <Tabs.Screen
-        name="two"
+        name="orders"
         options={{
           title: 'Orders',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
       />

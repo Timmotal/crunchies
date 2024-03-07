@@ -59,9 +59,10 @@ export default function TabLayout() {
       />
       {/* this is where i come into the picture */}
       <Tabs.Screen
-        name="two"
+        name="orders" // change the name to match a customized screen now
         options={{
           title: 'Orders',
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
       />
