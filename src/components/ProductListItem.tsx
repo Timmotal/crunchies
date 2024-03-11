@@ -22,11 +22,13 @@ type ProductListItemProps = {
 // specify 'type' after 'destructure'
 const ProductListItem = ({ product }: ProductListItemProps) => { // destructure
   const segments = useSegments(); // we can also use pathways
-  console.log(segments);
+  // console.log(segments);
   // console.log(props);
   return (
-    // asChild tells it, that the children elements should keep its styles only for elements other than texts
-    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
+    //  asChild tells it, that the children elements should keep its styles only for elements other than texts
+    <Link href={`/${segments[0]}/menu/${product.id}`} asChild> 
+    {/* why does comment here give the code a bug eh chatgpt, help me out */}
+       {/* // <Link href={`./menu/${product.id}`} asChild> relative path didnt work he says */}
     {/* // <Link href={`/menu/${product.id}`} asChild> */}
     {/* <Link href={'/product'} asChild> */}
     {/* <View style={styles.container}> */}

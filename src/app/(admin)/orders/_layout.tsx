@@ -5,7 +5,8 @@ export default function MenuStack() {
         <Stack
         >
             {/* this method to adjust the configs requires the name */}
-            <Stack.Screen name='index' options={{ title: 'Orders' }} />
+            {/* <Stack.Screen name='index' options={{ title: 'Orders' }} /> */}
+            <Stack.Screen name='list' options={{ headerShown: false }} />
         </Stack>
     )
 }
