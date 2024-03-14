@@ -1,10 +1,11 @@
 import Button from '@/components/Button';
 import { defaultPizzaImage } from '@/components/ProductListItem';
 import Colors from '@/constants/Colors';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, Alert } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useInsertProduct, useProduct, useUpdateProduct } from '@/api/products';
 
 type Props = {}
 
@@ -15,8 +16,28 @@ const CreateProductScreem = (props: Props) => {
   const [ errors, setErrors ] = useState('');
   const [ image, setImage ] = useState(String || null);
 
- const { id } = useLocalSearchParams();
- const isUpdating = !!id ; // this will be true if ID is defined
+ const { id: idString } = useLocalSearchParams();
+ const id = parseFloat(typeof idString === 'string' ? idString : idString?.[0] )
+//  const isUpdating = !!id ; // this will be true if ID is defined
+ const isUpdating = !!idString ;
+
+//  what useInsertProduct hook returns is all what the useMutate function inside of it gives us back
+const { mutate: insertProduct } = useInsertProduct();
+const { mutate: updateProduct } = useUpdateProduct();
+const { data: updatingProduct } = useProduct(id);
+
+const router = useRouter();
+
+// when updatingProduct changes, we wanna update state variables to reflect the changes 
+useEffect(() => {
+  if(updatingProduct) {
+    setName(updatingProduct.name)
+    setPrice(updatingProduct.price.toString())
+    setImage(updatingProduct.image)
+  }
+}, [updatingProduct]);
+
+// console.log(updatingProduct);
 
   const resetFields = () => {
     setName('');
@@ -24,6 +45,7 @@ const CreateProductScreem = (props: Props) => {
   };
 
   const validateInput = () => { // i actually think this is error handling and maybe some lickle validation
+    setErrors('');
     if (!name){
       setErrors('Name us required');
       return false;
@@ -32,7 +54,7 @@ const CreateProductScreem = (props: Props) => {
       setErrors('Price is required')
       return false;
     }
-    if (isNaN(parseFloat(price))){
+    if (isNaN(parseFloat(price))){ // if you parse the price into a float and it is not a number
       setErrors('Price is not a number');
       return false;
     }
@@ -55,18 +77,36 @@ const CreateProductScreem = (props: Props) => {
     if (!validateInput()){
       return; // return here if there is a validation error,----------handle error first again
     }
-    console.warn('Creating Product', name);
+    
+    // console.warn('Creating Product', name);
+
+    // Save in the Databse
+    insertProduct({name, price: parseFloat(price), image }, 
+    {
+      onSuccess: () => {
+        resetFields();
+        router.back();
+      }
+    });
+
     // reset fields after succesfully saving data to the database
-    resetFields();
+    // resetFields();
   };
 
   const onUpdate = () => {
-    if (!validateInput()){
+    if( !validateInput() ) {
       return; // return here if there is a validation error,----------handle error first again
     }
-    console.warn('Updating Product', name);
+    updateProduct({ id, name, price: parseFloat(price), image }, 
+    {
+      onSuccess: () => {
+        resetFields();
+        router.back();
+      },
+    });
+    // console.warn('Updating Product', name);
     // reset fields after succesfully saving data to the database
-    resetFields();
+    resetFields(); // removed this because it was causing some issue (04:48:00)
   };
 
   const pickImage = async () => {

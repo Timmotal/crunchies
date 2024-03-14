@@ -4,12 +4,14 @@
 // import { Text, View } from '@/components/Themed';
 // import EditScreenInfo from '@/src/components/EditScreenInfo';
 // import { Text, View } from '@/src/components/Themed';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 // import Colors from '../../constants/Colors';
 // import products from '@/data/products';
-import products from '@assets/data/products';
+// import products from '@assets/data/products';
 import ProductListItem from '@/components/ProductListItem';
 import { Product } from '@/types';
+import { useProductList } from '@/api/products';
+import { Text } from 'react-native';
 
 // const product = products[0];
 
@@ -33,6 +35,17 @@ import { Product } from '@/types';
 
 // export default function TabOneScreen() {
   export default function MenuScreen() {
+
+    const { data: products, error, isLoading } = useProductList()
+    
+
+    if(isLoading) {
+      return <ActivityIndicator />;
+    }
+
+    if(error) {
+      return <Text>Unable to fetch product</Text>
+    }
   return (
     <View> 
       {/* we do not neeed this view here, but i will leave it here, nonetheless */}

@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { useColorScheme } from '../components/useColorScheme';
 import CartProvider from '@/providers/cartProvider';
 import AuthProvider from '@/providers/AuthProvider';
+import QueryProvider from '@/providers/QueryProvider';
 
 
 export {
@@ -54,6 +55,9 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
+        {/* we put it below the AuthProvider, because it needs to know some info about the Auth,
+         but above the CART depends on query provider -> now all screen will be able to query the Database */}
+        <QueryProvider>
       {/* wrap the context provider around root stack navigator */}
       <CartProvider>
       <Stack>
@@ -63,6 +67,7 @@ function RootLayoutNav() {
         <Stack.Screen name="cart" options={{ presentation: 'modal' }} />
       </Stack>
       </CartProvider>
+      </QueryProvider>
       </AuthProvider>
     </ThemeProvider>
   );

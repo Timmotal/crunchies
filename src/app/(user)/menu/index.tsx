@@ -4,12 +4,17 @@
 // import { Text, View } from '@/components/Themed';
 // import EditScreenInfo from '@/src/components/EditScreenInfo';
 // import { Text, View } from '@/src/components/Themed';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 // import Colors from '../../constants/Colors';
 // import products from '@/data/products';
-import products from '@assets/data/products';
+// import products from '@assets/data/products';
 import ProductListItem from '@/components/ProductListItem';
 import { Product } from '@/types';
+// import { useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
+import { useQuery } from '@tanstack/react-query';
+import { Text } from 'react-native';
+import { useProductList } from '@/api/products';
 
 // const product = products[0];
 
@@ -33,11 +38,44 @@ import { Product } from '@/types';
 
 // export default function TabOneScreen() {
   export default function MenuScreen() {
+    const { data: products, error, isLoading } = useProductList()
+    //  WE TOOK OUT THIS AND MADE IT INTO A REUSEABLE FUNCTION
+    // const { data: products, error, isLoading } = useQuery({
+    //   queryKey: ['products'], //this will help with caching
+    //   queryFn: async () => {
+    //     const { data, error } = await supabase.from('products').select('*');
+    //     if(error) {
+    //       throw new Error(error.message); // we have to throw it, so React Query knows there is an error
+    //     }
+    //     return data;
+    //   },
+    // });
+
+    if(isLoading) {
+      return <ActivityIndicator />;
+    }
+
+    if(error) {
+      return <Text>Unable to fetch product</Text>
+    }
+    // -> fetch the product
+    // when component mounts, we need to do something, means we need useEffect with empty dependency array
+
+    // useEffect(() => {
+    //   const fetchProduct = async () => {
+    //     const { data, error } = await supabase.from('products').select('*')
+    //     console.log(error);
+    //     console.log(data)
+    //   };
+    //   fetchProduct();
+    // }, [])
+    
   return (
     <View> 
-      {/* we do not neeed this view here, but i will leave it here, nonetheless */}
+      {/* we do not need this [view] here, but i will leave it here, nonetheless */}
       <FlatList
-        data={products} // would be an array of items to be rendered
+      data={products} // -> [coming from the supabase database, alternative for firebase]
+        // data={products} // would be an array of items to be rendered [this is the static data from the files]
         // renderItem={{ item }}) => <ProductListItem product={products[6]} /> } // tells us how one item from the array should be rendered
         renderItem={({ item }) => <ProductListItem product={item} /> } // tells us how one item from the array should be rendered
         numColumns={2} // this is how we render grids
