@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, Alert } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useInsertProduct, useProduct, useUpdateProduct } from '@/api/products';
+import { useDeleteProduct, useInsertProduct, useProduct, useUpdateProduct } from '@/api/products';
 
 type Props = {}
 
@@ -25,6 +25,7 @@ const CreateProductScreem = (props: Props) => {
 const { mutate: insertProduct } = useInsertProduct();
 const { mutate: updateProduct } = useUpdateProduct();
 const { data: updatingProduct } = useProduct(id);
+const { mutate: deleteProduct } = useDeleteProduct();
 
 const router = useRouter();
 
@@ -127,7 +128,13 @@ useEffect(() => {
   };
 
   const onDelete = () => {
-    console.warn('DELETE!!!')
+    deleteProduct(id, {
+      onSuccess: () => {
+        resetFields();
+        router.replace('/(admin)');
+      }
+    })
+    // console.warn('DELETE!!!')
   };
 
   const confirmDelete = () => {

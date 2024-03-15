@@ -92,3 +92,19 @@ export const useUpdateProduct = () => {
     })
 }
 
+export const useDeleteProduct = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        async mutationFn(id: number) { //receive the ID as number
+            const { error } = await supabase.from('products').delete().eq('id', id);
+            if(error) {
+                throw new Error(error.message); // we have to throw it, so React Query knows there is an error
+              }
+        },
+        async onSuccess() {
+            await queryClient.invalidateQueries(['products']);
+        }
+    })
+}
+
