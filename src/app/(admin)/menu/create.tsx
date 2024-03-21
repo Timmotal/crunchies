@@ -129,9 +129,9 @@ useEffect(() => {
 
   const onDelete = () => {
     deleteProduct(id, {
-      onSuccess: () => {
+      onSuccess: () => { 
         resetFields();
-        router.replace('/(admin)');
+        router.replace('/(admin)'); // wont this be a problem, not appending history?
       }
     })
     // console.warn('DELETE!!!')

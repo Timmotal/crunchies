@@ -1,10 +1,13 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
-import { CartItem, Product } from '@/types';
+import { CartItem, Product, Tables } from '@/types';
 import { randomUUID } from "expo-crypto";
+
+type Product = Tables<'products'>;
 
 type CartType = {
     items: CartItem[];
-    addItem: (product: Product, size: CartItem['size']) => void; // select CartItem and then specifically select 'size'
+    addItem: (product: Tables<'products'>, size: CartItem['size']) => void; // with type generated from the supabase DB Tables
+    // addItem: (product: Product, size: CartItem['size']) => void; // select CartItem and then specifically select 'size'
     updateQuantity: (itemId: string, amount: -1 | 1) => void;
     // updateQuantity: (itemId: string, amount: number);
     total: number;
