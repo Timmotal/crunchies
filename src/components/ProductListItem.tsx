@@ -7,7 +7,9 @@ import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from 'react-native';
 import Colors from '@/constants/Colors';
 // import Colors from '@/src/constants/Colors';
-import { Product } from '../types';
+// import { Product, Tables } from '../types'; // initialy imported prpoduct manually
+import { Tables } from '../types';
+
 import { Link, useSegments } from 'expo-router';
 
 export const defaultPizzaImage =
@@ -16,7 +18,9 @@ export const defaultPizzaImage =
 // const product = products[0];
 
 type ProductListItemProps = {
-    product: Product;
+  product: Tables<'products'>;
+    // product: Product; // we dont wannt to define the TYPE manually -> (04:58:11)
+    // we wannsa say the product should match the type in supabase
 }
 // const ProductListItem = (props) => { // to define a component, create a simple function
 // specify 'type' after 'destructure'
@@ -90,3 +94,4 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
 });
+

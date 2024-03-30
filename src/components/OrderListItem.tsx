@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
-import { Order } from '../types';
+import { Order, Tables } from '../types';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs'; // for parsing the date and render in human readable form
 import { Link, useSegments } from 'expo-router';
@@ -8,8 +8,11 @@ import { Link, useSegments } from 'expo-router';
 dayjs.extend(relativeTime);
 
 type OrderListItemProps = {
-  order: Order;
+  order: Tables<'orders'>; // now we use helper tables, and then we specify the table the order is coming from
 };
+// type OrderListItemProps = {
+//   order: Order;
+// };
 
 const OrderListItem = ({ order }: OrderListItemProps) => {
   const segments = useSegments();
