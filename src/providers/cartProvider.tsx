@@ -2,6 +2,8 @@ import { PropsWithChildren, createContext, useContext, useState } from "react";
 // import { CartItem, Product, Tables } from '@/types'; // initially imported maual types
 import { CartItem, Tables } from '@/types';
 import { randomUUID } from "expo-crypto";
+import { useInsertOrder } from "@/api/orders";
+import { useRouter } from "expo-router";
 
 type Product = Tables<'products'>;
 
@@ -12,6 +14,7 @@ type CartType = {
     updateQuantity: (itemId: string, amount: -1 | 1) => void;
     // updateQuantity: (itemId: string, amount: number);
     total: number;
+    checkout: () => void;
   };
 
 
@@ -23,7 +26,9 @@ const CartContext = createContext<CartType>({
     addItem: () => {}, // empty function, both will never be used because they will be over written by actual function
     updateQuantity: () => {},
     total: 0,
+    checkout: () => {},
 });
+
 
 // creates context
 // gets or consumes the context
@@ -31,6 +36,8 @@ const CartContext = createContext<CartType>({
 const CartProvider = ({ children }: PropsWithChildren) => {
     // specify the type to be of CartItem with empty Array
     const [ items, setItems ] = useState<CartItem[]>([]);
+    const { mutate: insertOrder } = useInsertOrder(); 
+    const router = useRouter();
 
     const addItem = (product: Product, size: CartItem['size']) => {
         // if already in cart, increment quantity
@@ -89,8 +96,23 @@ const CartProvider = ({ children }: PropsWithChildren) => {
         (sum, item) => (sum += item.product.price * item.quantity),
                         // sum += 12 * 2 + 34 + 
         0 // initial value of sum
-    )
+    );
 
+    const clearCart = () => {
+        setItems([]);
+    }
+
+    const checkout = () => {
+        // console.warn('Checkout');
+        insertOrder({ total }, {
+            onSuccess: (data) => { // fell how we got the ID from data (wink)
+                clearCart();
+                // router.back(); // we dont want this
+                router.push(`/(user)/orders/${data.id}`);
+            }
+        });
+    }
+ 
     return (
         <CartContext.Provider
             value={{ // here is what we make available to the cart context consumer
@@ -101,6 +123,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
                 addItem,
                 updateQuantity,
                 total,
+                checkout,
             }}
         > 
         {/* anything rendered inside the provider will be able to consume the values */}
