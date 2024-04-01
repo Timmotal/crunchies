@@ -5,7 +5,7 @@ import OrderListItem from "@/components/OrderListItem";
 import OrderItemListItem from "@/components/OrderItemListItem";
 import Colors from "@/constants/Colors";
 import { OrderStatusList } from "@/types";
-import { useOrderDetails } from "@/api/orders";
+import { useOrderDetails, useUpdateOrder } from "@/api/orders";
 
 
 export default function OrderDetailsScreen() {
@@ -14,6 +14,11 @@ export default function OrderDetailsScreen() {
 
     // we will receive it using the useOrderDetails
     const { data: order, isLoading, error } = useOrderDetails(id);
+    const { mutate: UpdateOrder } = useUpdateOrder();
+
+    const updateStatus = (status: string) => {
+      UpdateOrder({ id: id, updatedFields: { status } });
+    }
 
     // const order = orders.find((o) => o.id.toString() === id); // finding it manually
 
@@ -49,7 +54,8 @@ export default function OrderDetailsScreen() {
                   {OrderStatusList.map((status) => (
                     <Pressable
                       key={status}
-                      onPress={() => console.warn('Update status')}
+                      // onPress={() => console.warn('Update status')}
+                      onPress={() => updateStatus(status)} // send in the status, we are clicking on
                       style={{
                         borderColor: Colors.light.tint,
                         borderWidth: 1,
