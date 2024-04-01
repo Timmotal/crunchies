@@ -1,11 +1,14 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import Colors from '../constants/Colors';
-import { OrderItem } from '../types';
+import { OrderItem, Tables } from '../types';
 import { defaultPizzaImage } from './ProductListItem';
 
 type OrderItemListItemProps = {
-  item: OrderItem;
+  // beside the field from order_items, it will also have a product bcos, that's what we are querying here
+  item: { products: Tables<'products'>} & Tables<'order_items'>; // type imported from Database
+  // item: OrderItem; // manual type
+
 };
 
 const OrderItemListItem = ({ item }: OrderItemListItemProps) => {

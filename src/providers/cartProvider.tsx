@@ -4,6 +4,7 @@ import { CartItem, Tables } from '@/types';
 import { randomUUID } from "expo-crypto";
 import { useInsertOrder } from "@/api/orders";
 import { useRouter } from "expo-router";
+import { useInsertOrderItems } from "@/api/order-items";
 
 type Product = Tables<'products'>;
 
@@ -37,6 +38,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     // specify the type to be of CartItem with empty Array
     const [ items, setItems ] = useState<CartItem[]>([]);
     const { mutate: insertOrder } = useInsertOrder(); 
+    const { mutate: insertOrderItems } = useInsertOrderItems(); 
     const router = useRouter();
 
     const addItem = (product: Product, size: CartItem['size']) => {
@@ -105,12 +107,41 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     const checkout = () => {
         // console.warn('Checkout');
         insertOrder({ total }, {
-            onSuccess: (data) => { // fell how we got the ID from data (wink)
-                clearCart();
-                // router.back(); // we dont want this
-                router.push(`/(user)/orders/${data.id}`);
-            }
+            onSuccess: saveOrderItems,
+                // clearCart(); // refactored, out to saveOrderItem, nope, we wanted some extra features
+                // // router.back(); // we don't want this
+                // router.push(`/(user)/orders/${data.id}`);
+            // }
         });
+    };
+
+    //after we insert order, knowing it's details, we then add to that order a list of order items
+    const saveOrderItems = (order: Tables<'orders'>) => {
+        // const item1 = items[0]; // we dont know something, so we take just one item for now (05;35:19)
+
+        const orderItems = items.map((cartItem) => ({ // we create this structure for every cartItem
+            order_id: order.id,
+            product_id: cartItem.product_id,
+            quantity: cartItem.quantity,
+            size: cartItem.size,
+        }));
+
+        insertOrderItems(
+            orderItems,
+        //     {
+        //     order_id: order.id,
+        //     product_id: item1.product_id,
+        //     quantity: item1.quantity,
+        //     size: item1.size,
+        // },
+        {
+            onSuccess() {
+        // console.log(data)
+        clearCart();
+        router.push(`/(user)/orders/${order.id}`);
+            }
+        })
+
     }
  
     return (
