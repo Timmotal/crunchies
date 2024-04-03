@@ -11,6 +11,7 @@ import Colors from '@/constants/Colors';
 import { Tables } from '../types';
 
 import { Link, useSegments } from 'expo-router';
+import RemoteImage from './RemoteImage';
 
 export const defaultPizzaImage =
 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/veggie.png';
@@ -39,11 +40,17 @@ const ProductListItem = ({ product }: ProductListItemProps) => { // destructure
     {/* pressable is similar to view but can be pressed */}
     <Pressable style={styles.container}>
         {/* provide fallback image if the image from the API is null */}
-      <Image 
-        source={{ uri: product.image || defaultPizzaImage }} 
+        <RemoteImage 
+        path={product.image}
+        fallback={defaultPizzaImage}
         style={styles.image}
         resizeMode='contain' // i like this, when parent container width is different from image, just contain it then 
       />
+      {/* <Image // taken out, replaced with RemoteImages from Data SuperBase
+        source={{ uri: product.image || defaultPizzaImage }} 
+        style={styles.image}
+        resizeMode='contain' // i like this, when parent container width is different from image, just contain it then 
+      /> */}
       {/* <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Pepperoni</Text> */}
       {/* <Text style={styles.title}>Pepperoni</Text> */}
       <Text style={styles.title}>{product.name}</Text>

@@ -5,6 +5,7 @@ import OrderListItem from "@/components/OrderListItem";
 import OrderItemListItem from "@/components/OrderItemListItem";
 import { useOrderDetails } from "@/api/orders";
 import { ActivityIndicator } from "react-native";
+import { useUpdateOrderSubscription } from "@/api/orders/subscriptions";
 
 
 export default function OrderDetailsScreen() {
@@ -14,6 +15,7 @@ export default function OrderDetailsScreen() {
 
     // we will receive it using the useOrderDetails
     const { data: order, isLoading, error } = useOrderDetails(id);
+    useUpdateOrderSubscription(id);
 
     // const order = orders.find((o) => o.id.toString() === id); // finding it manually
 

@@ -7,6 +7,7 @@ import Button from '@/components/Button';
 import { useCart } from '@/providers/cartProvider';
 import { PizzaSize } from '@/types';
 import { useProduct } from '@/api/products';
+import RemoteImage from '@/components/RemoteImage';
 
 
 // type Props = {}
@@ -57,7 +58,12 @@ const ProductDetailScreen = () => {
       {/* <Stack.Screen options={{ title: 'Details ' + id}} /> */}
       <Stack.Screen options={{ title: product?.name}} />
 
-      <Image source={{ uri: product.image || defaultPizzaImage}} style={styles.image} />
+      <RemoteImage 
+        path={product?.image}
+        fallback={defaultPizzaImage} 
+        style={styles.image} 
+      />
+      {/* <Image source={{ uri: product.image || defaultPizzaImage}} style={styles.image} /> */}
 
       <Text>Select size</Text>
       <View style={styles.sizes}>
