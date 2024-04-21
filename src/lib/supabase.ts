@@ -27,13 +27,17 @@ const ExpoSecureStoreAdapter = {
 //   },
 //   removeItem: (key: string) => {
 //     SecureStore.deleteItemAsync(key);
-//   },
+//   }, 
   
 // };
 
+// THIS connects the App to Local Supabase
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON || ''; 
 
-const supabaseUrl = 'https://jtfzifwyxdwsjgcjjmgm.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0ZnppZnd5eGR3c2pnY2pqbWdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAxNzk0NjQsImV4cCI6MjAyNTc1NTQ2NH0.XKJkfV2YwDQwFnLbHX3BSpp7qKT1VGNDOjnbCb5v98E';
+// THIS CONNECTS the APP to Remote Supabase
+// const supabaseUrl = "https://jtfzifwyxdwsjgcjjmgm.supabase.co";
+// const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0ZnppZnd5eGR3c2pnY2pqbWdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTAxNzk0NjQsImV4cCI6MjAyNTc1NTQ2NH0.XKJkfV2YwDQwFnLbHX3BSpp7qKT1VGNDOjnbCb5v98E";
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
