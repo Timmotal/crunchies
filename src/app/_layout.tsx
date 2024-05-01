@@ -59,11 +59,8 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''}>
       <AuthProvider>
-        {/* we put it below the AuthProvider, because it needs to know some info about the Auth,
-         but above the CART depends on query provider -> now all screen will be able to query the Database */}
          <QueryProvider>
          <NotificationProvider>
-      {/* wrap the context provider around root stack navigator */}
       <CartProvider>
       <Stack>
         <Stack.Screen name="(user)" options={{ headerShown: false }} />
