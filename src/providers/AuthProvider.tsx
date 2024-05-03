@@ -30,11 +30,11 @@ export default function AuthProvider({ children}: PropsWithChildren) {
         // we need a function and the call it directly after the function
         const fetchSession = async() => {
             // we can now call async function
-            const result = await supabase.auth.getSession();
+            // const result = await supabase.auth.getSession();
             // console.log(result);
 
             // just feel how we destructured it here
-            const { data: {session} } = await supabase.auth.getSession();
+            const { data: {session}, } = await supabase.auth.getSession();
             // const { data } = await supabase.auth.getSession();
             // setSession(data.session);
             
@@ -47,10 +47,11 @@ export default function AuthProvider({ children}: PropsWithChildren) {
                   .eq('id', session.user.id) // look for id that matches the session
                   .single();
                 setProfile(data || null);
+                console.log('this is data', data);
               }
 
               setLoading(false) // when we finish fetching user info, set loading to false
-            // console.log(data);
+           
         };
         fetchSession();
 
@@ -61,7 +62,7 @@ export default function AuthProvider({ children}: PropsWithChildren) {
         // console.log('Auth provider is mounted...March 12th 0842 hours...2024') // will be executed when AuthProvider is mounted
     }, []);
 
-    console.log(profile);
+    console.log('this is profile',profile);
 
     return <AuthContext.Provider 
                         // only when the group of profile is an admin, will he be an actual admin
