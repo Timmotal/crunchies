@@ -8,10 +8,10 @@ import { useEffect } from 'react';
 // import { useColorScheme } from '.././components/useColorSchemee';
 import { useColorScheme } from '../components/useColorScheme';
 import CartProvider from '@/providers/cartProvider';
-import AuthProvider, { NotificationProvider } from '@/providers/AuthProvider';
+import AuthProvider from '@/providers/AuthProvider';
 import QueryProvider from '@/providers/QueryProvider';
 import { StripeProvider } from '@stripe/stripe-react-native';
-// import NotificationProvider from '@/providers/NotificationProvider';
+import NotificationProvider from '@/providers/NotificationProvider';
 // import { initializePaymentSheet } from '@/lib/stripe'; // was never suposta be here
 
 

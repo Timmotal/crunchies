@@ -24,11 +24,11 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
   const responseListener = useRef<Notifications.Subscription>();
 
   const savePushToken = async (newToken: string | undefined) => {
-    console.log('this nonsense function is about to be called')
     setExpoPushToken(newToken);
+
     console.log('after setting the token to the state')
     if (!newToken) {
-      console.log("i think there is no new token")
+      // console.log("i think there is no new token")
       return 
     }
     console.log('about to push into database')
